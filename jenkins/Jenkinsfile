@@ -1,0 +1,42 @@
+pipeline {
+    agent {
+        label "master"
+    }
+
+    tools {
+        // Note: this should match with the tool name configured in your jenkins instance (JENKINS_URL/configureTools/)
+        maven "Maven 3.6.3"
+
+    }
+    
+    stages {
+        stage("Clone Code") {
+
+            steps {
+                    git 'https://github.com/IAMDEH/simple-java-maven-app.git';
+            }
+
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
+    }
+}
+        
