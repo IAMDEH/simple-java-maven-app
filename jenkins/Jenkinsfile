@@ -56,9 +56,9 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') {
+        stage('Docker Build') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                 sh 'docker build -t iamdehman/demo:latest .'
             }
         }
         stage("publish to nexus") {
