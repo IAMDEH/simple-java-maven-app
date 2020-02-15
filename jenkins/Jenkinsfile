@@ -30,6 +30,8 @@ pipeline {
         // Jenkins credential id to authenticate to Nexus OSS
 
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
+        
+       
 
     }
 
@@ -57,9 +59,12 @@ pipeline {
             }
         }
         stage('Docker Build') {
+            environment {
+                DOCKERHUB_CREDS = credentials('dockerhub')
+            }
             steps {
                  sh 'docker build -t iamdeh/demo:v1.0 .'
-                 sh 'docker push iamdeh/demo:v1.0'
+                 sh "docker login --username $DOCKERHUB_CREDS_USR --password $DOCKERHUB_CREDS_PSW && docker push iamdeh/demo:v1.0"
             }
         }
         stage("publish to nexus") {
