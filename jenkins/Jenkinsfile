@@ -61,6 +61,7 @@ pipeline {
                 parallel {
                         stage('Docker Build') {
                             steps {
+                                // random comment
                                  sh "docker build -t 172.17.0.1:5000/demo:${env.GIT_COMMIT} ."
                                  sh "docker push 172.17.0.1:5000/demo:${env.GIT_COMMIT}"
                             }
