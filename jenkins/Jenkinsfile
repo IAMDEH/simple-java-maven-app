@@ -62,8 +62,8 @@ pipeline {
                         stage('Docker Build') {
                             steps {
                                 // random comment
-                                 sh "docker build -t registry.me:5000/demo:${env.GIT_COMMIT} ."
-                                 sh "docker push registry.me:5000/demo:${env.GIT_COMMIT}"
+                                 sh "docker build -t http://registry.me:5000/demo:${env.GIT_COMMIT} ."
+                                 sh "docker push http://registry.me:5000/demo:${env.GIT_COMMIT}"
                             }
                         }
                         stage("publish to nexus") {
