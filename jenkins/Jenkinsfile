@@ -65,7 +65,7 @@ pipeline {
                                 DOCKERHUB_CREDS = credentials('dockerhub')
                             }
                             steps {
-                                 sh 'docker build -t iamdeh/demo:v1.0 .'
+                                 sh 'docker build -t iamdeh/demo:v1.1 .'
                                  sh "docker login --username $DOCKERHUB_CREDS_USR --password $DOCKERHUB_CREDS_PSW && docker push iamdeh/demo:v1.0"
                             }
                         }
