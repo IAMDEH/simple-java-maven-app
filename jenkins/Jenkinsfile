@@ -63,7 +63,7 @@ pipeline {
                             steps {
                                 // random comment
                                  sh "docker build -t 172.17.0.1:5000/demo:${env.GIT_COMMIT} ."
-                                 sh "docker push 172.17.0.1:5000/demo:${env.GIT_COMMIT}"
+                                 sh "docker login --username admin --password root 172.17.0.1:5000 && docker push 172.17.0.1:5000/demo:${env.GIT_COMMIT}"
                             }
                         }
                         stage("publish to nexus") {
