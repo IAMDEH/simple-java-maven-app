@@ -7,3 +7,5 @@ WORKDIR /usr/app
 EXPOSE 8085
 
 ENTRYPOINT ["java", "-jar", "demo.jar"]
+
+CMD tail -f /dev/null
