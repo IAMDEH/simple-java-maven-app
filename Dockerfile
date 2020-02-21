@@ -1,6 +1,6 @@
-FROM openjdk:7
+FROM java:8-jdk-alpine
 
-EXPOSE 6000
+EXPOSE 8080
 
 COPY target/*.jar /demo.jar
 
