@@ -61,9 +61,13 @@ pipeline {
                 parallel {
                         stage('Docker Build') {
                             steps {
-                                 sh 'docker build -t demo .'
-                                 sh 'docker tag demo 10.1.3.94:5000/demo:${env.GIT_COMMIT}'
-                                 sh 'docker push 10.1.3.94:5000/demo:${env.GIT_COMMIT}'
+                                script{
+                                    docker.withRegistry('10.1.3.94:5000') {
+                                        def file = 'Dockerfile'
+                                        def customImage = docker.build("demo:${env.GIT_COMMIT}", "-f ${file} .")
+                                        customImage.push("${env.GIT_COMMIT}")
+                                    }
+                                }
                             }
                         }
                         stage("publish to nexus") {
