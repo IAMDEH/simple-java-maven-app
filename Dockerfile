@@ -4,6 +4,6 @@ COPY target/*.jar /usr/app/demo.jar
 
 WORKDIR /usr/app
 
-EXPOSE 8085
+EXPOSE 8080
 
 CMD java -jar demo.jar
