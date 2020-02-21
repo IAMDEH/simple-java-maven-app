@@ -6,4 +6,4 @@ WORKDIR /usr/app
 
 EXPOSE 8085
 
-CMD java -jar demo.jar && tail -f /dev/null
+CMD java -jar demo.jar
