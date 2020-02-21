@@ -1,6 +1,6 @@
 FROM openjdk:7
 
-EXPOSE 8080
+EXPOSE 6000
 
 COPY target/*.jar /demo.jar
 
