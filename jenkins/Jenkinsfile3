@@ -1,8 +1,7 @@
 pipeline {
-    agent {
-        label "master"
-    }
 
+    agent none
+    
     tools {
         // Note: this should match with the tool name configured in your jenkins instance (JENKINS_URL/configureTools/)
         maven "Maven 3.6.3"
@@ -12,21 +11,27 @@ pipeline {
 
     stages {
         stage("Clone Code") {
-
+            agent {
+                label "master"
+            }
             steps {
                     git 'https://github.com/IAMDEH/simple-java-maven-app.git';
             }
 
         }
         stage('Compile') {
-
+            agent {
+                label "master"
+            }
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
 
         }
         stage('Test') {
-
+            agent {
+                label "master"
+            }
             steps {
                 sh 'mvn test'
             }
@@ -38,13 +43,35 @@ pipeline {
 
         }
         stage('Docker Build & Push') {
-
+            agent {
+                label "master"
+            }
             steps {
                 sh "docker build -t 10.10.10.14:5000/demo:${env.GIT_COMMIT} ."
                 sh "docker push 10.10.10.14:5000/demo:${env.GIT_COMMIT}"
             }              
                         
-        }             
+        }
+        stage('Promote To Staging') {
+            agent {
+                docker {
+                    image 'traherom/kustomize-docker:1.0.5'
+                }
+            }        
+            environment {
+                GIT_CREDS = credentials('git')
+            }
+            steps {
+                sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/IAMDEH/argocd-demo-deploy.git"
+                sh "git config --global user.email 'ee_izri@esi.dz'"
+                
+                dir("argocd-demo-deploy") {
+                    sh "cd ./e2e && kustomize edit set image 10.10.10.14:5000/demo:${env.GIT_COMMIT}"
+                    sh "git commit -am 'Publish new version' && git push || echo 'no changes'"
+                }
+            }              
+                        
+        }
     }
 }
         
