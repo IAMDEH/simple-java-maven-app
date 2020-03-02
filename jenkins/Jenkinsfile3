@@ -59,7 +59,7 @@ pipeline {
             agent {
                 docker {
                     image 'argoproj/argo-cd-ci-builder:v0.13.1'
-                    args '--volumes-from 7bd9e79968eb8897fd00e4381b260b637e041a0e90fc135871790cf2944480bd'
+                    args '--volumes-from 7bd9e79968eb'
                 }
             }        
             steps {
