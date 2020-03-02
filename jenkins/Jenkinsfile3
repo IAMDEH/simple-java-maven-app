@@ -58,7 +58,7 @@ pipeline {
         stage('Promote To Staging') {
             agent {
                 docker {
-                    image 'traherom/kustomize-docker:1.0.5'
+                    image 'argoproj/argo-cd-ci-builder:v0.13.1'
                 }
             }        
             steps {
