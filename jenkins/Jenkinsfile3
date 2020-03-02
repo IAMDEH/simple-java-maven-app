@@ -62,6 +62,7 @@ pipeline {
                 }
             }        
             steps {
+                sh "rm -rf ./argocd-demo-deploy"
                 sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/IAMDEH/argocd-demo-deploy.git"
                 sh "git config --global user.email 'ee_izri@esi.dz'"
                 
