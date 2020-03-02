@@ -2,10 +2,13 @@ pipeline {
 
     agent none
     
+    environment {
+        GIT_CREDS = credentials('git')
+    }
+    
     tools {
         // Note: this should match with the tool name configured in your jenkins instance (JENKINS_URL/configureTools/)
         maven "Maven 3.6.3"
-
     }
     
 
@@ -58,9 +61,6 @@ pipeline {
                     image 'traherom/kustomize-docker:1.0.5'
                 }
             }        
-            environment {
-                GIT_CREDS = credentials('git')
-            }
             steps {
                 sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/IAMDEH/argocd-demo-deploy.git"
                 sh "git config --global user.email 'ee_izri@esi.dz'"
