@@ -64,7 +64,7 @@ pipeline {
             steps {
                 sh "rm -rf ./argocd-demo-deploy"
                 sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/IAMDEH/argocd-demo-deploy.git"
-                sh "git config --global user.email 'ci@ci.com'"
+                sh "git config --global user.email '$(whoami)@$(hostname)'"
                 
                 dir("argocd-demo-deploy") {
                     sh "cd ./e2e && kustomize edit set image 10.10.10.14:5000/demo:${env.GIT_COMMIT}"
