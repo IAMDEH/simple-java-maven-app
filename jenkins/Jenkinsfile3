@@ -55,18 +55,24 @@ pipeline {
             }              
                         
         }
-        stage('Promote To Staging') {
+        stage('Clone Deployment Repo'){
             agent {
-                docker {
-                    image 'argoproj/argo-cd-ci-builder:v0.13.1'
-                    args '--volumes-from 7bd9e79968eb'
-                }
-            }        
+                label "master"
+            }
             steps {
                 sh "rm -rf ./argocd-demo-deploy"
                 sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/IAMDEH/argocd-demo-deploy.git"
                 sh "git config --global user.email 'iamdehman@gmail.com'"
-                
+            }
+        }
+        stage('Promote To Staging') {
+            agent {
+                docker {
+                    image 'argoproj/argo-cd-ci-builder:v0.13.1'
+                    args '--tty'
+                }
+            }        
+            steps {     
                 dir("argocd-demo-deploy") {
                     sh "cd ./e2e && kustomize edit set image 10.10.10.14:5000/demo:${env.GIT_COMMIT}"
                     sh "git commit -am 'Publish new version' && git push || echo 'no changes'"
